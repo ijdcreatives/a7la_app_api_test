@@ -1,0 +1,185 @@
+model User {
+  id        Int       @id @default(autoincrement())
+  name      String?   @map("name")
+  image     String?   @default("uploads/default.png")
+  isOnline  Boolean   @default(false)
+  deletedAt DateTime? @map("deleted_at")
+
+  Delivery   Delivery?
+  Admin      Admin?
+  Customer   Customer?
+  Vendor     Vendor?
+  Specialist Specialist?
+
+  sessions         Sessions[]
+  otp              OTP[]
+  Review           Review[]
+  UserConversation UserConversation[]
+  SenderMessage    Message[]          @relation("SenderMessage")
+  ReceiverMessage  Message[]          @relation("ReceiverMessage")
+  Address          Address[]
+  Coupon           Coupon[]
+  UserCoupon       UserCoupon[]
+
+  @@map("user")
+}
+
+model Admin {
+  id        Int       @id
+  phone     String?   @unique
+  email     String?   @unique
+  role      Int?
+  password  String?
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  User User  @relation(fields: [id], references: [id], onDelete: Cascade)
+  Role Role? @relation(fields: [role], references: [id], onDelete: Cascade)
+
+  @@index([role])
+  @@map("admin")
+}
+
+model Customer {
+  id            Int       @id
+  role          Int?
+  phone         String?   @unique
+  email         String?   @unique
+  deviceId      String?   @unique
+  password      String?
+  fcm           String?   @map("fcm_token")
+  earningPoints Int       @default(0)
+  wallet        Int       @default(0)
+  createdAt     DateTime  @default(now()) @map("created_at")
+  deletedAt     DateTime? @map("deleted_at")
+  male          Boolean   @default(false)
+  Role          Role?     @relation(fields: [role], references: [id], onDelete: Cascade)
+  User          User      @relation(fields: [id], references: [id], onDelete: Cascade)
+  status        Status    @default(NOT_VERIFIED)
+
+  Fund           Fund[]
+  LoyaltyPoint   LoyaltyPoint[]
+  Orders         Order[]
+  Cars           Car[]
+  Transaction    Transaction[]
+  FavoriteStores FavoriteStore[]
+
+  @@index([role])
+  @@map("customer")
+}
+
+model Specialist {
+  id                Int       @id
+  role              Int?
+  phone             String?   @unique
+  email             String?   @unique
+  deviceId          String?   @unique
+  password          String?
+  status            Status    @default(ACTIVE)
+  fcm               String?   @map("fcm_token")
+  earningPoints     Int       @default(0)
+  wallet            Int       @default(0)
+  createdAt         DateTime  @default(now()) @map("created_at")
+  deletedAt         DateTime? @map("deleted_at")
+  homeDeliveryOrder Boolean   @default(false) @map("home_delivery_order")
+
+  Role Role? @relation(fields: [role], references: [id], onDelete: Cascade)
+  User User  @relation(fields: [id], references: [id], onDelete: Cascade)
+
+  Orders Order[]
+
+  @@index([role])
+  @@map("specialist")
+}
+
+model Vendor {
+  id        Int       @id
+  role      Int?
+  storeId   Int
+  deviceId  String?   @unique
+  phone     String?   @unique
+  email     String?   @unique
+  password  String
+  idNumber  String?   @map("id_number")
+  fcm       String?   @map("fcm_token")
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+  default   Boolean   @default(false)
+  status    Status    @default(NOT_VERIFIED)
+
+  User  User  @relation(fields: [id], references: [id], onDelete: Cascade)
+  Role  Role? @relation(fields: [role], references: [id], onDelete: Cascade)
+  Store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([role])
+  @@map("vendor")
+}
+
+model Delivery {
+  id                   Int               @id
+  role                 Int?
+  rating               Int               @default(0)
+  identifyImage        String            @map("identify_image")
+  identifyNumber       String            @map("identify_number")
+  phone                String?           @unique
+  email                String?           @unique
+  deviceId             String?           @unique
+  password             String?
+  cityId               Int               @map("city_id")
+  nationalityId        Int               @map("nationality_id")
+  status               DeliveryManStatus @default(PENDING)
+  createdAt            DateTime          @default(now()) @map("created_at")
+  verified             Boolean           @default(false)
+  readyToReceiveOrders Boolean           @default(true) @map("ready_to_receive_orders")
+  lat                  Int               @default(0)
+  lng                  Int               @default(0)
+  online               Boolean           @default(false)
+  deletedAt            DateTime?         @map("deleted_at")
+
+  Review                Review[]
+  Orders                Order[]
+  Withdraw              Withdraw[]
+  DeliveryBank          DeliveryBank[]
+  DeliveryOrderRejected DeliveryOrderRejected[]
+  Wallet                Wallet?
+
+  User        User        @relation(fields: [id], references: [id], onDelete: Cascade)
+  Role        Role?       @relation(fields: [role], references: [id], onDelete: Cascade)
+  City        City        @relation(fields: [cityId], references: [id])
+  Nationality Nationality @relation(fields: [nationalityId], references: [id])
+
+  @@index([role])
+  @@map("delivery")
+}
+
+model Address {
+  id        Int       @id @default(autoincrement())
+  User      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    Int
+  default   Boolean   @default(false)
+  title     String
+  lat       Decimal
+  lng       Decimal
+  Order     Order[]
+  deletedAt DateTime? @map("deleted_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("address")
+}
+
+model Car {
+  id         Int       @id @default(autoincrement())
+  car        String
+  model      String
+  color      String
+  plate      String
+  license    String
+  customerId Int       @map("customer_id")
+  deletedAt  DateTime? @map("deleted_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  Customer Customer @relation(fields: [customerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  Order    Order[]
+
+  @@map("cars")
+}

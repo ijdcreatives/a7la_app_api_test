@@ -1,0 +1,25 @@
+model Settings {
+  setting    String        @id
+  nameEn     String?       @map("name_en")
+  nameAr     String?       @map("name_ar")
+  tooltipAr  String?       @map("tooltip_ar")
+  tooltipEn  String?       @map("tooltip_en")
+  value      String
+  domain     SettingDomain
+  deletedAt  DateTime?     @map("deleted_at")
+  enumValues Json?         @map("enum_values")
+  dataType   DataType      @map("data_type")
+
+  @@map("settings")
+}
+
+enum SettingDomain {
+  BUSINESS
+  DELIVERY
+  ORDER
+  REFUND
+  STORE
+  CUSTOMER
+  PRIORITY
+  DISBURSEMENT
+}

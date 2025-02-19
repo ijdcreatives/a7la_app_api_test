@@ -1,0 +1,12 @@
+model Addon {
+  id       Int     @id @default(autoincrement()) @map("id")
+  nameAr   String  @unique 
+  nameEn   String  @unique
+  price    Int     @map("price")
+  storeId  Int     @map("store_id")
+  isActive Boolean @default(true) @map("is_active")
+  deletedAt DateTime?   @map("deleted_at")
+  Store    Store   @relation(fields: [storeId], references: [id])
+
+  @@map("addon")
+}

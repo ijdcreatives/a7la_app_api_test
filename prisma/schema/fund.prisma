@@ -1,0 +1,9 @@
+model Fund {
+    id         Int       @id @default(autoincrement())
+    customerId Int       @map("customer_id")
+    Customer   Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+    price      Int       @default(0)
+    deletedAt  DateTime? @map("deleted_at")
+
+    @@map("fund")
+}

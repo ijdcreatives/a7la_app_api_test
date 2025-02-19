@@ -1,0 +1,44 @@
+model Permissions {
+  nameEn    String          @id @unique
+  nameAr    String          @unique
+  type      PermissionsType @default(ADMIN)
+  deletedAt DateTime?       @map("deleted_at")
+
+  RolePermission RolePermission[]
+
+  @@index([nameEn])
+  @@map("permissions")
+}
+
+model Role {
+  id        Int       @id @default(autoincrement())
+  nameEn    String
+  nameAr    String
+  createdAt DateTime  @default(now())
+  storeId   Int?
+  deletedAt DateTime? @map("deleted_at")
+
+  type           RoleType         @default(SYSTEM)
+  Admin          Admin[]
+  Specialist     Specialist[]
+  Customer       Customer[]
+  Vendor         Vendor[]
+  Delivery       Delivery[]
+  RolePermission RolePermission[]
+  Sessions       Sessions[]
+  Store          Store?           @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@map("roles")
+}
+
+model RolePermission {
+  role       Int
+  permission String
+  Role       Role        @relation(fields: [role], references: [id], onDelete: Cascade)
+  Permission Permissions @relation(fields: [permission], references: [nameEn], onDelete: Cascade)
+  deletedAt  DateTime?   @map("deleted_at")
+
+  @@id([role, permission])
+  @@index([role, permission])
+  @@map("role_permissions")
+}

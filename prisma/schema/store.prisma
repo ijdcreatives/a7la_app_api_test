@@ -1,0 +1,99 @@
+model Store {
+  id                 Int         @id @default(autoincrement())
+  nameAr             String
+  nameEn             String
+  logo               String      @db.VarChar(255)
+  cover              String      @db.VarChar(255)
+  address            String      @default("") @db.VarChar(255)
+  tax                Int?        @db.MediumInt
+  moduleId           Int         @map("module_id")
+  zoneId             Int?        @map("zone_id")
+  lat                Decimal?
+  lng                Decimal?
+  planId             Int         @default(1) @map("plan_id")
+  cityId             Int         @default(1) @map("city_id")
+  mainStoreId        Int?        @map("main_store_id")
+  default            Boolean     @default(false)
+  verified           Boolean     @default(false)
+  maxDeliveryTime    Int?        @map("max_delivery_time")
+  minDeliveryTime    Int?        @map("min_delivery_time")
+  deliveryTime       Int?        @map("delivery_time")
+  isRecommended      Boolean     @default(false) @map("is_recommended")
+  rating             Int         @default(0)
+  review             Int         @default(0)
+  closed             Boolean     @default(true) @map("closed")
+  temporarilyClosed  Boolean     @default(false) @map("temporarily_closed")
+  homeDelivery       Boolean     @default(true) @map("home_delivery")
+  takeAway           Boolean     @default(true) @map("take_away")
+  carDelivery        Boolean     @default(true) @map("car_delivery")
+  minimumOrderAmount Int         @default(0) @map("minimum_order_amount")
+  phone              String      @default("")
+  branchName         String?
+  status             StoreStatus @default(PENDING)
+  createdAt          DateTime    @default(now()) @map("created_at")
+  deletedAt          DateTime?   @map("deleted_at")
+
+  Module                 Module                   @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  Zone                   Zone?                    @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+  Plan                   Plan                     @relation(fields: [planId], references: [id], onDelete: Cascade)
+  MainStore              Store?                   @relation("ParentChild", fields: [mainStoreId], references: [id])
+  City                   City                     @relation(fields: [cityId], references: [id], onDelete: Cascade)
+  Children               Store[]                  @relation("ParentChild")
+  Addon                  Addon[]
+  Product                Product[]
+  Vendor                 Vendor[]
+  Banner                 Banner[]
+  Coupon                 Coupon[]
+  Disbursement           Disbursement[]
+  Order                  Order[]
+  StoreSchedule          StoreSchedule[]
+  StoreNotificationSetup StoreNotificationSetup[]
+  Role                   Role[]
+  FavoriteStore          FavoriteStore[]
+  Subscriptions          Subscription[]
+  DisbursementAccount    DisbursementAccount[]
+  Withdraw               Withdraw[]
+  StoreWallet            Wallet?
+  Stores                 StoreBank[]
+
+  @@index([zoneId])
+  @@index([id])
+  @@map("store")
+}
+
+model FavoriteStore {
+  storeId    Int      @map("store_id")
+  customerId Int      @map("customer_id")
+  Store      Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  Customer   Customer @relation(fields: [customerId], references: [id], onDelete: Cascade)
+
+  @@id([storeId, customerId])
+  @@index([storeId, customerId])
+  @@map("favorite_store")
+}
+
+model StoreSchedule {
+  id          Int      @id @default(autoincrement())
+  storeId     Int      @map("store_id")
+  openingTime DateTime @map("opening_time") @db.Time()
+  closingTime DateTime @map("closing_time") @db.Time()
+  day         Days
+  Store       Store    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+  @@index([storeId])
+  @@map("store_schedule")
+}
+
+model StoreNotificationSetup {
+  id           Int                     @id @default(autoincrement())
+  storeId      Int                     @map("store_id")
+  pushEnabled  NotificationSetupStatus
+  emailEnabled NotificationSetupStatus
+  smsEnabled   NotificationSetupStatus
+  Store        Store                   @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  name         String
+  description  String
+
+  @@index([storeId])
+  @@map("store_notification_setup")
+}

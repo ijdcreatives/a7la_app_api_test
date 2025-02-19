@@ -1,0 +1,24 @@
+model Wallet {
+    id              Int       @id @default(autoincrement())
+    storeId         Int?      @unique @map("store_id")
+    deliveryManId   Int?      @unique @map("delivery_man_id")
+    totalEarning    Decimal   @default(0.00) @map("total_earning") @db.Decimal(24, 2)
+    totalWithdrawn  Decimal   @default(0.00) @map("total_withdrawn") @db.Decimal(24, 2)
+    pendingWithdraw Decimal   @default(0.00) @map("pending_withdraw") @db.Decimal(24, 2)
+    collectedCash   Decimal   @default(0.00) @map("collect_cash") @db.Decimal(24, 2)
+    currentBalance  Decimal   @default(0.00) @map("current_balance") @db.Decimal(24, 2)
+    Store           Store?    @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    DeliveryMan     Delivery? @relation(fields: [deliveryManId], references: [id], onDelete: Cascade)
+
+    @@map("wallet")
+}
+
+model AdminWallet {
+    id              Int     @id @default(autoincrement())
+    totalEarning    Decimal @default(0.00) @map("total_earning") @db.Decimal(24, 2)
+    totalWithdrawn  Decimal @default(0.00) @map("total_withdrawn") @db.Decimal(24, 2)
+    pendingWithdraw Decimal @default(0.00) @map("pending_withdraw") @db.Decimal(24, 2)
+    currentBalance  Decimal @default(0.00) @map("current_balance") @db.Decimal(24, 2)
+
+    @@map("admin_wallet")
+}

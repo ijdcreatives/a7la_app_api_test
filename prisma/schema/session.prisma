@@ -1,0 +1,18 @@
+model Sessions {
+  jti       String      @id @default(uuid())
+  userId    Int         @map("user_id")
+  device    String      @default("unknown")
+  valid     Boolean     @default(true) 
+  role      Int  
+  fcmToken  String?     @map("fcm_token") 
+  socketId  String?     @map("socket_id")
+  outdated  Boolean     @default(false)
+  createdAt DateTime    @default(now()) @map("created_at")
+  baseRole  Roles
+  type      SessionType @default(ACCESS)
+  User      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Role      Role        @relation(fields: [role], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+  @@map("sessions")
+}

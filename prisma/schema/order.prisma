@@ -1,0 +1,104 @@
+model Order {
+  id                          Int                     @id @default(autoincrement())
+  price                       Float
+  note                        String?                 @db.Text
+  date                        DateTime                @default(now())
+  couponId                    String?                 @map("coupon_id") @db.Text
+  addressId                   Int?                    @map("address_id")
+  customerId                  Int                     @map("customer_id")
+  storeId                     Int?                    @map("store_id")
+  cancelReasonId              Int?                    @map("cancel_reason_id")
+  shipping                    Float                   @default(0)
+  tax                         Float                   @default(0)
+  pawWIthWallet               Int                     @default(0)
+  totalPrice                  Int                     @default(0)
+  discountAmount              Int                     @default(0)
+  deliveryManId               Int?
+  specialistId                Int?
+  carId                       Int?
+  adminCommission             Float                   @default(0)
+  deliveryCommission          Float                   @default(0)
+  paymentStatus               PaymentStatus           @default(UNPAID)
+  paymentMethod               PaymentMethod           @default(CASH)
+  deliveryStatus              DeliveryStatus          @default(HOME_DELIVERY)
+  status                      OrderStatus             @default(PENDING)
+  paidWithWallet              Int                     @default(0) @map("paid_with_wallet")
+  waitingDeliveryAcceptanceAt DateTime?               @map("waiting_delivery_acceptance_at")
+  waitingDeliveryAt           DateTime?               @map("waiting_delivery_at")
+  deliveredAt                 DateTime?               @map("delivered_at")
+  acceptedAt                  DateTime?               @map("accepted_at")
+  canceledAt                  DateTime?               @map("canceled_at")
+  handedOverAt                DateTime?               @map("handed_over_at")
+  missedAt                    DateTime?               @map("missed_at")
+  rejectedAt                  DateTime?               @map("rejected_at")
+  refundAt                    DateTime?               @map("refund_at")
+  deletedAt                   DateTime?               @map("deleted_at")
+  onTheWayAt                  DateTime?               @map("on_the_way_at")
+  createdAt                   DateTime?               @default(now()) @map("created_at")
+  Customer                    Customer                @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  Store                       Store?                  @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  Specialist                  Specialist?             @relation(fields: [specialistId], references: [id], onDelete: Cascade)
+  Address                     Address?                @relation(fields: [addressId], references: [id], onDelete: Cascade)
+  DeliveryMan                 Delivery?               @relation(fields: [deliveryManId], references: [id], onDelete: Cascade)
+  Review                      Review[]
+  OrderItems                  OrderItem[]
+  ParcelOrder                 ParcelOrder?
+  userCoupon                  UserCoupon[]
+  Car                         Car?                    @relation(fields: [carId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  DeliveryOrderRejected       DeliveryOrderRejected[]
+
+  @@map("order")
+}
+
+model OrderItem {
+  id                 Int     @id @default(autoincrement())
+  orderId            Int
+  productId          Int
+  quantity           Int
+  note               String? @db.Text
+  price              Int
+  variationsId       String? @map("variations_id") @db.Text
+  variationsOptionId String? @map("variations_option_id") @db.Text
+  addonsId           String? @map("addons_id") @db.Text
+  Order              Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  Product            Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@map("order_item")
+}
+
+model ParcelOrder {
+  id            Int     @id @default(autoincrement())
+  senderPoint   String
+  receiverPoint String
+  details       String? @db.Text
+  place         String?
+  quantity      Int?    @default(0)
+  price         Int?    @default(0)
+  orderId       Int     @unique
+  Order         Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("parcel_order")
+}
+
+model Reason {
+  id       Int        @id @default(autoincrement())
+  reasonAr String     @map("reason_ar") @db.Text
+  reasonEn String     @map("reason_en") @db.Text
+  isActive Boolean    @default(true) @map("is_active")
+  role     Roles      @default(ADMIN) @map("role")
+  type     ReasonType @map("type")
+
+  @@map("reason")
+}
+
+model DeliveryOrderRejected {
+  id Int @id @default(autoincrement())
+
+  Order   Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  orderId Int   @map("order_id")
+
+  DeliveryMan Delivery @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  deliveryId  Int      @map("delivery_id")
+
+  @@map("delivery_order_rejected")
+}

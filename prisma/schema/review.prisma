@@ -1,0 +1,16 @@
+model Review {
+  id         Int       @id @default(autoincrement())
+  rating     Int
+  comment    String?
+  userId     Int       @map("user_id")
+  orderId    Int?      @map("order_id")
+  deliveryId Int?      @map("delivery_id")
+  createdAt  DateTime  @default(now()) @map("created_at")
+  deletedAt  DateTime? @map("deleted_at")
+
+  User     User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  Delivery Delivery? @relation(fields: [deliveryId], references: [id], onDelete: Cascade)
+  Order    Order?    @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("review")
+}

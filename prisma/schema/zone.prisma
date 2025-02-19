@@ -1,0 +1,34 @@
+model Zone {
+  id        Int       @id @default(autoincrement())
+  nameAr    String
+  nameEn    String
+  displayAr String
+  displayEn String
+  cash      Boolean   @default(true)
+  digital   Boolean   @default(false)
+  offline   Boolean   @default(false)
+  isActive  Boolean   @default(false)
+  createdBy CreatedBy @default(ADMIN)
+  createdAt DateTime? @default(now()) @map("created_at")
+  deletedAt DateTime? @map("deleted_at")
+
+  Point        Point[]
+  Store        Store[]
+  Coupon       Coupon[]
+  Notification Notification[]
+
+  @@index([id])
+  @@map("zone")
+}
+
+model Point {
+  id        Int       @id @default(autoincrement())
+  lat       Decimal
+  lng       Decimal
+  zoneId    Int       @map("zone_id")
+  deletedAt DateTime? @map("deleted_at")
+  zone      Zone      @relation(fields: [zoneId], references: [id])
+
+  @@index([zoneId])
+  @@map("zone_points")
+}

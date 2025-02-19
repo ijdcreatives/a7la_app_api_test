@@ -1,0 +1,29 @@
+model OTP {
+  id             String   @id @default(uuid())
+  userId         Int
+  otp            String
+  token          String?
+  status         Status   @default(ACTIVE)
+  role           Roles
+  generatedTimes Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  User User @relation(fields: [userId], references: [id])
+
+  @@unique([userId, role])
+  @@map("otps")
+}
+
+model RegisterOTP {
+  id             String   @id @default(uuid())
+  phone          String
+  otp            String
+  token          String?
+  status         Status   @default(ACTIVE)
+  role           Roles
+  generatedTimes Int      @default(0)
+  createdAt      DateTime @default(now())
+
+  @@unique([phone, role])
+  @@map("register_otps")
+}

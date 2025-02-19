@@ -1,0 +1,253 @@
+enum Roles {
+  CUSTOMER
+  ADMIN
+  VENDOR
+  DELIVERY
+  MANAGER
+  SPECIALIST
+}
+
+enum Status {
+  ACTIVE
+  PENDING
+  DENIED
+  NOT_VERIFIED
+}
+
+enum DeliveryManStatus {
+  ACTIVE
+  DENIED
+  PENDING
+}
+
+enum ModuleType {
+  GROCERY
+  FOOD
+  PHARMACY
+  ECOMMERCE
+  PARCEL
+  SERVICES
+}
+
+enum OtherBannerType {
+  BEST
+  NEW
+  BOTTOM
+  TOP
+}
+
+enum ReasonType {
+  REFUND
+  CANCEL
+}
+
+enum SubscriptionStatus {
+  ACTIVE
+  INACTIVE
+  EXPIRED
+  EXPIRE_SOON
+}
+
+enum DisbursementStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+enum PriorityStatus {
+  NORMAL
+  HIGH
+  MEDIUM
+}
+
+enum CreatedBy {
+  ADMIN
+  VENDOR
+}
+
+enum StoreStatus {
+  ACTIVE
+  PENDING
+  DENIED
+}
+
+enum DiscountType {
+  PERCENTAGE
+  AMOUNT
+  NONE
+}
+
+enum BannerType {
+  STORE
+  ITEM
+  DEFAULT
+}
+
+enum CouponType {
+  STORE_WISE
+  ZONE_WISE
+  FIRST_ORDER
+  FREE_DELIVERY
+  DEFAULT
+}
+
+enum RecipientType {
+  CUSTOMER
+  STORE
+  DELIVERY_MAN
+}
+
+enum PriorityType {
+  HIGH
+  LOW
+}
+
+enum PromotionType {
+  STORE
+  VIDEO
+}
+
+enum DeliveryManType {
+  FREELANCER
+  SALARY_BASED
+}
+
+enum IdentifyType {
+  PASSPORT
+  NATIONAL_ID
+  DRIVING_LICENSE
+}
+
+enum OrderStatus {
+  WAITING_DELIVERY_ACCEPTANCE
+  WAITING_DELIVERY
+  PENDING
+  ACCEPTED
+  REJECTED
+  DELIVERED
+  ON_THE_WAY
+  HANDED_OVER
+  CANCELLED
+  PAYMENT_FAILED
+  REFUND
+  MISSED
+}
+
+enum WithdrawStatus {
+  APPROVED
+  DENIED
+  PENDING
+}
+
+enum CityStatus {
+  ACTIVE
+  INACTIVE
+}
+
+enum ProductStatus {
+  PENDING
+  ACTIVE
+  INACTIVE
+  REJECTED
+}
+
+enum Days {
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+  SATURDAY
+}
+
+enum PaymentStatus {
+  PAID
+  UNPAID
+  FAILED
+}
+
+enum PaymentMethod {
+  CASH
+  VISA
+  WALLET
+}
+
+enum DeliveryStatus {
+  HOME_DELIVERY
+  TAKE_AWAY
+  CAR_DELIVERY
+}
+
+enum SessionType {
+  ACCESS
+  FORGET_PASSWORD
+  VISITOR
+}
+
+enum NotificationSetupStatus {
+  DISABLED
+  ACTIVE
+  INACTIVE
+}
+
+enum AdvertisementStatus {
+  RUNNING
+  PAUSED
+  APPROVED
+  EXPIRED
+  PENDING
+  DENIED
+  UPDATED
+}
+
+enum RoleType {
+  STORE
+  SYSTEM
+  ADMIN
+}
+
+enum PermissionsType {
+  ADMIN
+  STORE
+  GLOBAL
+  VENDOR
+}
+
+enum MessageType {
+  TEXT
+  IMAGE
+  VIDEO
+  FILE
+}
+
+enum PlanType {
+  BASIC
+  PREMIUM
+}
+
+enum TransactionType {
+  ORDER_REFUND
+  PAYMENT
+  FUND
+  LOYALTY_POINT
+}
+
+enum LoyaltyPointType {
+  OrderPlace
+  LoyaltyPoint
+}
+
+enum DataType {
+  STRING
+  NUMBER
+  BOOLEAN
+  DATE
+  DATETIME
+  TIME
+  LATITUDE
+  LONGITUDE
+  JSON
+  FILE
+  ENUM
+}

@@ -1,0 +1,22 @@
+model Module {
+  id            Int        @id @default(autoincrement())
+  nameAr        String     @map("name_ar") @db.VarChar(100)
+  nameEn        String     @map("name_en") @db.VarChar(100)
+  descriptionAr String     @map("description_ar") @db.Text
+  descriptionEn String     @map("description_en") @db.Text
+  thumbnail     String     @db.VarChar(255)
+  isActive      Boolean    @default(true)
+  icon          String     @db.VarChar(100)
+  type          ModuleType
+  createdAt     DateTime   @default(now()) @map("created_at")
+  deletedAt     DateTime?  @map("deleted_at")
+
+  category     Category[]
+  store        Store[]
+  product      Product[]
+  Banner       Banner[]
+  Coupon       Coupon[]
+  Notification Notification[]
+
+  @@map("module")
+}

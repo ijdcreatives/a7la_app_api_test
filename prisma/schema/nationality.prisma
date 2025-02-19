@@ -1,0 +1,10 @@
+model Nationality {
+    id        Int       @id @default(autoincrement())
+    nameAr    String    @map("name_ar")
+    nameEn    String    @map("name_en")
+    deletedAt DateTime? @map("deleted_at")
+
+    Delivery Delivery[]
+
+    @@map("nationalities")
+}

@@ -1,0 +1,44 @@
+model Coupon {
+  id           Int          @id @default(autoincrement())
+  nameAr       String
+  nameEn       String
+  discount     Int          @default(0)
+  maxDiscount  Int          @default(0)
+  minPurchase  Int          @default(0)
+  startDate    DateTime
+  expireDate   DateTime
+  startTime    String?      @map("start_time")
+  endTime      String?      @map("end_time")
+  code         String
+  userId       Int?
+  limit        Int          @default(0)
+  isActive     Boolean      @default(true) @map("is_active")
+  storeId      Int?         @map("store_id")
+  zoneId       Int?         @map("zone_id")
+  moduleId     Int          @map("module_id")
+  discountType DiscountType @map("discount_type")
+  createdBy    CreatedBy    @default(ADMIN)
+  deletedAt    DateTime?    @map("deleted_at")
+  type         CouponType
+  Store        Store?       @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  Zone         Zone?        @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+  Module       Module       @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  User         User?        @relation(fields: [userId], references: [id])
+  UserCoupon   UserCoupon[]
+
+  @@map("coupon")
+}
+
+model UserCoupon {
+  userId    Int
+  orderId   Int
+  couponId  Int
+  User      User      @relation(fields: [userId], references: [id])
+  Coupon    Coupon    @relation(fields: [couponId], references: [id])
+  Order     Order     @relation(fields: [orderId], references: [id])
+  deletedAt DateTime? @map("deleted_at")
+
+  @@id([userId, couponId])
+  @@index([userId, couponId])
+  @@map("user_coupon")
+}

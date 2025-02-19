@@ -1,0 +1,13 @@
+model LoyaltyPoint {
+    id         String           @id @default(uuid())
+    customerId Int              @map("customer_Id")
+    earned     Decimal          @default(0)
+    converted  Decimal          @default(0)
+    current    Decimal          @default(0)
+    createdAt  DateTime         @default(now())
+    type       LoyaltyPointType
+    Customer   Customer         @relation(fields: [customerId], references: [id], onDelete: Cascade)
+    deletedAt  DateTime?        @map("deleted_at")
+
+    @@map("loyalty_point")
+}

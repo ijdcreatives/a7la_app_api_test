@@ -1,0 +1,22 @@
+model Banner {
+  id          Int       @id @default(autoincrement())
+  nameAr      String
+  nameEn      String
+  moduleId    Int       @map("module_id")
+  storeId     Int?      @map("store_id")
+  productId   Int?      @map("product_id")
+  image       String    @db.VarChar(100)
+  isActive    Boolean   @default(true) @map("is_active")
+  isFeatured  Boolean   @default(false) @map("is_featured")
+  redirectUrl String?   @map("redirect_url")
+  deletedAt   DateTime? @map("deleted_at")
+
+  type      BannerType?
+  createdBy Roles       @default(ADMIN)
+  Store     Store?      @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  Product   Product?    @relation(fields: [productId], references: [id], onDelete: Cascade)
+  Module    Module      @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+
+  @@map("banner")
+}
+

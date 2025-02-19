@@ -1,0 +1,11 @@
+model Bank {
+    id        Int       @id @default(autoincrement())
+    nameEn    String    @map("name_en")
+    nameAr    String    @map("name_ar")
+    deletedAt DateTime? @map("deleted_at")
+
+    Stores       StoreBank[]
+    DeliveryBank DeliveryBank[]
+
+    @@map("banks")
+}

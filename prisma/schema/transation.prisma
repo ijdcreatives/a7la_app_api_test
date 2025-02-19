@@ -1,0 +1,16 @@
+model Transaction {
+    id         String          @id @default(uuid())
+    customerId Int             @map("customer_Id")
+    credit     Decimal         @default(0)
+    debit      Decimal         @default(0)
+    balance    Decimal         @default(0)
+    type       TransactionType
+    reference  String          @default("N/A")
+    createdAt  DateTime        @default(now()) @map("created_at")
+
+    Customer  Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+    deletedAt DateTime? @map("deleted_at")
+
+    @@map("transactions")
+}
+

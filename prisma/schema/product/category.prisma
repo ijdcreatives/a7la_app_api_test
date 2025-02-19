@@ -1,0 +1,20 @@
+model Category {
+  id                      Int            @id @default(autoincrement()) @map("id")
+  nameAr                  String         @map("name_ar")
+  nameEn                  String         @map("name_en")
+  isActive                Boolean        @default(true) @map("is_active")
+  isFeatured              Boolean        @default(false) @map("is_featured")
+  image                   String
+  moduleId                Int            @map("module_id")
+  parentId                Int?           @map("parent_id")
+  priority                Int            @default(3)
+  Product                 Product[]
+  Module                  Module         @relation(fields: [moduleId], references: [id])
+  Parent                  Category?      @relation("ParentChild", fields: [parentId], references: [id])
+  Children                Category[]     @relation("ParentChild")
+  SubProduct              Product[]      @relation("SubCategory")
+  deletedAt          DateTime?   @map("deleted_at")
+
+
+  @@map("category")
+}

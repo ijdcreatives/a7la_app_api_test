@@ -1,0 +1,50 @@
+model Product {
+  id                 Int            @id @default(autoincrement()) @map("id")
+  nameAr             String         @map("name_ar")
+  nameEn             String         @map("name_en")
+  descriptionAr      String         @map("description_ar")
+  descriptionEn      String         @map("description_en")
+  thumbnail          String
+  storeId            Int            @map("store_id")
+  categoryId         Int            @map("category_id")
+  subCategoryId      Int?           @map("sub_category_id")
+  maxPurchase        Int            @default(0) @map("max_purchase")
+  price              Int
+  totalPrice         Int
+  stock              Int?
+  grossSale          Int            @default(0)
+  discountGrossSale  Int            @default(0)
+  totalOrders        Int            @default(0)
+  totalAmountSold    Int            @default(0) @map("total_amount_sold")
+  totalDiscountGiven Int            @default(0) @map("total_discount_given")
+  discount           Decimal?
+  color              String?
+  size               String?
+  type               String?
+  isOrganic          Boolean?       @default(true) @map("is_organic")
+  isBasicMedicine    Boolean?       @default(true) @map("is_basic_medicine")
+  isPrescription     Boolean?       @default(true) @map("is_prescription")
+  isOffer            Boolean?       @default(false) @map("is_offer")
+  isRecommended      Boolean?       @default(false) @map("is_recommended")
+  moduleId           Int            @map("module_id")
+  rating             Int            @default(0)
+  review             Int            @default(0)
+  addonsId           String?        @db.Text
+  bestRated          Boolean?       @default(false)
+  mostSellers        Boolean?       @default(false)
+  createdAt          DateTime       @default(now()) @map("created_at")
+  status             ProductStatus? @default(PENDING)
+  discountType       DiscountType   @default(NONE)
+  deletedAt          DateTime?      @map("deleted_at")
+
+  Store          Store                @relation(fields: [storeId], references: [id], onDelete: Cascade)
+  Category       Category             @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+  SubCategory    Category?            @relation("SubCategory", fields: [subCategoryId], references: [id], onDelete: Cascade)
+  Module         Module               @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  Variation      Variation[]
+  OrderItem      OrderItem[]
+  Banner         Banner[]
+
+  @@map("product")
+}
+

@@ -1,0 +1,41 @@
+model Conversation {
+  id        Int       @id @default(autoincrement())
+  deletedAt DateTime? @map("deleted_at")
+
+  Message          Message[]
+  UserConversation UserConversation[]
+
+  @@map("conversation")
+}
+
+model UserConversation {
+  id             Int       @id @default(autoincrement())
+  userId         Int
+  conversationId Int
+  deletedAt      DateTime? @map("deleted_at")
+
+  Conversation Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  User         User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role         Roles
+
+  @@map("user_conversation")
+}
+
+model Message {
+  id             Int       @id @default(autoincrement())
+  conversationId Int       @map("conversation_id")
+  senderId       Int       @map("sender_id")
+  receiverId     Int       @map("receiver_id")
+  deletedAt      DateTime? @map("deleted_at")
+
+  content         String
+  createdAt       DateTime     @default(now())
+  read            Boolean      @default(true)
+  Conversation    Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  SenderMessage   User         @relation(name: "SenderMessage", fields: [senderId], references: [id], onDelete: Cascade)
+  ReceiverMessage User         @relation(name: "ReceiverMessage", fields: [receiverId], references: [id], onDelete: Cascade)
+  type            MessageType  @default(TEXT)
+
+  @@index([senderId, receiverId])
+  @@map("message")
+}

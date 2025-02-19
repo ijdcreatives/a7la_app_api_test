@@ -1,0 +1,15 @@
+model City {
+    id        Int         @id @default(autoincrement())
+    nameAr    String      @map("name_ar") @db.VarChar(255)
+    nameEn    String      @map("name_en") @db.VarChar(255)
+    status    CityStatus? @default(ACTIVE)
+    regionId  Int         @map("region_id")
+    createdAt DateTime    @default(now()) @map("created_at")
+    deletedAt DateTime?   @map("deleted_at")
+
+    updatedAt   DateTime   @updatedAt @map("updated_at")
+    Store       Store[]
+    DeliveryMan Delivery[]
+
+    @@map("cities")
+}

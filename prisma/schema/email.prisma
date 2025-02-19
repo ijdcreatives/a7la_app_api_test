@@ -1,0 +1,23 @@
+model Email {
+    email      String
+    templateEn String        @map("template_en")
+    templateAr String        @map("template_ar")
+    subjectEn  String        @default("subject") @map("subject_en")
+    subjectAr  String        @default("subject") @map("subject_ar")
+    keys       Json
+    receiver   EmailReceiver
+    isActive   Boolean       @default(true) @map("is_active")
+    createdAt  DateTime      @default(now()) @map("created_at")
+    updatedAt  DateTime?     @updatedAt @map("updated_at")
+    deletedAt  DateTime?     @map("deleted_at")
+
+    @@id([email, receiver], name: "emailReceiver")
+    @@map("emails")
+}
+
+enum EmailReceiver {
+    ADMIN
+    CUSTOMER
+    DELIVERYMAN
+    STORE
+}

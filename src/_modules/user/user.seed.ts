@@ -1,0 +1,17 @@
+export const userPermissions = [
+  'user_admin_create',
+  'user_admin_read',
+  'user_admin_update',
+  'user_admin_delete',
+  'user_admin_inactive',
+  'user_driver_create',
+  'user_driver_read',
+  'user_driver_update',
+  'user_driver_delete',
+  'user_driver_inactive',
+  'user_customer_create',
+  'user_customer_read',
+  'user_customer_update',
+  'user_customer_delete',
+  'user_customer_inactive',
+];

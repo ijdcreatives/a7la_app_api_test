@@ -1,0 +1,9 @@
+model AutomatedMessage {
+    id        Int       @id @default(autoincrement())
+    messageAr String    @map("message_ar")
+    messageEn String    @map("message_en")
+    isActive  Boolean   @default(true)
+    deletedAt DateTime? @map("deleted_at")
+
+    @@map("automated_message")
+}

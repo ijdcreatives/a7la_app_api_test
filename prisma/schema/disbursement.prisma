@@ -1,0 +1,29 @@
+model DisbursementAccount {
+    id            Int            @id @default(autoincrement())
+    storeId       Int            @map("store_id")
+    bankName      String
+    accountNumber String
+    iban          String
+    swiftCode     String?
+    default       Boolean        @default(false)
+    deletedAt     DateTime?      @map("deleted_at")
+    Store         Store          @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    Disbursement  Disbursement[]
+
+    @@map("disbursement_account")
+}
+
+model Disbursement {
+    id                    Int                 @id @default(autoincrement())
+    storeId               Int                 @map("store_id")
+    disbursementAccountId Int                 @map("disbursement_account_id")
+    createdAt             DateTime            @default(now())
+    deletedAt             DateTime?           @map("deleted_at")
+    updatedAt             DateTime            @default(now())
+    amount                Decimal
+    status                DisbursementStatus  @default(PENDING)
+    Account               DisbursementAccount @relation(fields: [disbursementAccountId], references: [id], onDelete: Cascade)
+    Store                 Store               @relation(fields: [storeId], references: [id], onDelete: Cascade)
+
+    @@map("disbursement")
+}

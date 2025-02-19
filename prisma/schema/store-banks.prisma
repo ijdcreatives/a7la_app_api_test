@@ -1,0 +1,17 @@
+model StoreBank {
+    id        Int       @id @default(autoincrement())
+    name      String
+    iban      String
+    phone     String
+    ownerName String?
+    storeId   Int       @map("store_id")
+    bankId    Int       @map("bank_id")
+    deletedAt DateTime? @map("deleted_at")
+
+    Store Store @relation(fields: [storeId], references: [id], onDelete: Cascade)
+    Bank  Bank  @relation(fields: [bankId], references: [id], onDelete: Cascade)
+
+    Withdraw Withdraw[]
+
+    @@map("store_banks")
+}

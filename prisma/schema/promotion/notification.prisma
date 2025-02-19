@@ -1,0 +1,16 @@
+model Notification {
+  id          Int       @id @default(autoincrement())
+  name        String
+  description String    @db.Text
+  image       String?
+  isActive    Boolean   @default(true) @map("is_active")
+  zoneId      Int?      @map("zone_id")
+  moduleId    Int       @map("module_id")
+  deletedAt   DateTime? @map("deleted_at")
+
+  recipient RecipientType
+  Module    Module        @relation(fields: [moduleId], references: [id], onDelete: Cascade)
+  Zone      Zone?         @relation(fields: [zoneId], references: [id], onDelete: Cascade)
+
+  @@map("notification")
+}
