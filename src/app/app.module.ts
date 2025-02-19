@@ -20,6 +20,9 @@ import { AppService } from './app.service';
 import { StoreModule } from 'src/_modules/store/store.module';
 import { ModulesModule } from 'src/_modules/modules/modules.module';
 
+import * as path from 'path';
+const I18N_DIR = path.join(process.cwd(), './i18n');
+
 @Module({
   imports: [
     ScheduleModule.forRoot(),
@@ -34,7 +37,7 @@ import { ModulesModule } from 'src/_modules/modules/modules.module';
       useFactory: (configService: ConfigService) => ({
         fallbackLanguage: configService.getOrThrow('FALLBACK_LANGUAGE'),
         loaderOptions: {
-          path: join(__dirname, '../i18n'),
+          path: I18N_DIR,
           watch: true,
         },
       }),
