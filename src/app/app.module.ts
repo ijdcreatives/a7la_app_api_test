@@ -34,7 +34,7 @@ import { ModulesModule } from 'src/_modules/modules/modules.module';
       useFactory: (configService: ConfigService) => ({
         fallbackLanguage: configService.getOrThrow('FALLBACK_LANGUAGE'),
         loaderOptions: {
-          path: join(__dirname, '../i18n/'),
+          path: join(__dirname, '../i18n'),
           watch: true,
         },
       }),

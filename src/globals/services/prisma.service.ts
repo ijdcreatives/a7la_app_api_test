@@ -11,12 +11,12 @@ import { promises as fs } from 'fs';
 import * as path from 'path';
 import { softDeleteMiddleware } from '../middlewares/prisma.softdelete.middleware';
 
-const SCHEMA_DIR = path.join(__dirname, '../../../../prisma/schema');
-
+const SCHEMA_DIR = path.join(__dirname, '../../../prisma/schema');
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
   private dmmf: DMMF.Document;
   constructor() {
+    console.log(SCHEMA_DIR);
     super();
     this.$use(async (params, next) => {
       // if (
